@@ -54,8 +54,8 @@ public class UserEntity extends Auditable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(
-            name="user-roles",
-            joinColumns = @JoinColumn(name = "user-id") ,
+            name="user_roles",
+            joinColumns = @JoinColumn(name = "user_id") ,
             inverseJoinColumns = @JoinColumn(name = "role_id" , referencedColumnName = "id")
     )
     private RoleEntity role;

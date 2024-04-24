@@ -2,6 +2,7 @@ package com.magret.securedoc.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.magret.securedoc.enumeration.Authority;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
@@ -17,5 +18,5 @@ import lombok.*;
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class RoleEntity extends Auditable{
     private String name;
-    private String authorities;
+    private Authority authorities;
 }
