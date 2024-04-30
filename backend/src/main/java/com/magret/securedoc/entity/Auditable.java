@@ -46,7 +46,7 @@ public abstract class Auditable {
 
     @PrePersist
     public void beforePersist(){
-        var userId = RequestContext.getUserId();;
+        var userId = RequestContext.getUserId();
         if(userId == null) { throw new ApiException("Cannot Persist Entity without user Id and Request Context for this thread"); }
 
         setCreatedAt(LocalDateTime.now());
