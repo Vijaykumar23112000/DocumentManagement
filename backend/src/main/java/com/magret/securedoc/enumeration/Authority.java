@@ -1,10 +1,8 @@
 package com.magret.securedoc.enumeration;
 
-import lombok.Getter;
 
 import static com.magret.securedoc.constant.Constants.*;
 
-@Getter
 public enum Authority {
     USER(USER_AUTHORITIES),
     ADMIN(ADMIN_AUTHORITIES),

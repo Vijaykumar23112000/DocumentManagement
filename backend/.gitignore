@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### ENV FILE ###
+.env
+
+### PROFILES ###
+*application-dev.yml
+*application-prod.yml

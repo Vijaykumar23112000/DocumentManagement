@@ -13,7 +13,6 @@ import java.util.Map;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class UserEvent {
     private UserEntity user;
     private EventType type;
