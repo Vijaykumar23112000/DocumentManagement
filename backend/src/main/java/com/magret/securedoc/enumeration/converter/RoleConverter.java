@@ -17,7 +17,7 @@ public class RoleConverter implements AttributeConverter<Authority , String> {
 
     @Override
     public Authority convertToEntityAttribute(String code) {
-        if(code==null) { return null; }
+        if(code == null) { return null; }
         return Stream.of(Authority.values())
                 .filter(authority -> authority.getValue().equals(code))
                 .findFirst()

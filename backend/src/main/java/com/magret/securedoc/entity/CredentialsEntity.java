@@ -7,6 +7,8 @@ import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import static jakarta.persistence.FetchType.*;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,7 +22,7 @@ public class CredentialsEntity  extends Auditable{
 
     private String password;
 
-    @OneToOne(targetEntity = UserEntity.class , fetch = FetchType.EAGER)
+    @OneToOne(targetEntity = UserEntity.class , fetch = EAGER)
     @JoinColumn(name="user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "id")
