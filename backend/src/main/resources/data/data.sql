@@ -5,4 +5,3 @@ VALUES (0 , '023a7479-e7a7-079f-3ae5-a766fe25eca9' , 'System' , 'System' , 'Syst
     'This is not a user but the system itself' , '897f3898-31ed-654a-eb93-531648a0db88' ,
     'http://cdn-icons-png.flaticon.com/128/2911/2911883.png' , 0 , 0 , '2024-05-07 14:05:13.947772' , '2024-05-07 14:05:13.947772'
      , TRUE , TRUE , FALSE , FALSE );
-

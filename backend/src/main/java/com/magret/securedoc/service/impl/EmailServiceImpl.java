@@ -5,6 +5,7 @@ import com.magret.securedoc.service.EmailService;
 import com.magret.securedoc.utils.EmailUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -19,7 +20,8 @@ public class EmailServiceImpl implements EmailService {
     private static final String NEW_USER_ACCOUNT_VERIFICATION = "New User Account Verification";
     private static final String PASSWORD_RESET_REQUEST = "Password Reset Request";
 
-    private final JavaMailSender sender;
+    @Autowired
+    private JavaMailSender sender;
 
     @Value("${spring.mail.verify.host}")
     private String host;
@@ -31,11 +33,12 @@ public class EmailServiceImpl implements EmailService {
     @Async
     public void sendNewAccountEmail(String name, String email, String token) {
         try{
+            log.error(host +" : " + fromEmail);
             var message = new SimpleMailMessage();
-            message.setSubject(NEW_USER_ACCOUNT_VERIFICATION);
             message.setFrom(fromEmail);
-            message.setTo(email);
+            message.setSubject(NEW_USER_ACCOUNT_VERIFICATION);
             message.setText(EmailUtils.getEmailMessage(name , host , token));
+            message.setTo(email);
             sender.send(message);
         }catch (Exception e){
             log.error(e.getMessage());
@@ -48,10 +51,10 @@ public class EmailServiceImpl implements EmailService {
     public void sendPasswordResetEmail(String name, String email, String token) {
         try {
             var message = new SimpleMailMessage();
-            message.setSubject(PASSWORD_RESET_REQUEST);
             message.setFrom(fromEmail);
-            message.setTo(email);
+            message.setSubject(PASSWORD_RESET_REQUEST);
             message.setText(EmailUtils.getResetPasswordMessage(name,host,token));
+            message.setTo(email);
             sender.send(message);
         } catch (Exception e){
             log.error(e.getMessage());
