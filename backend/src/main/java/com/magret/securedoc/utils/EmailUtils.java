@@ -1,21 +1,21 @@
 package com.magret.securedoc.utils;
 
 public class EmailUtils {
-    public static String getEmailMessage(String name , String host , String token){
+    public static String getEmailMessage(String name , String host , String key){
         return "Hello "+ name +",\n\nYour New Account has Been Created. Please Click on the link below to verify your account.\n\n"+
-                getVerificationUrl(host , token)+"\n\nThe Support Team";
+                getVerificationUrl(host , key)+"\n\nThe Support Team";
     }
 
-    public static String getResetPasswordMessage(String name , String host , String token){
+    public static String getResetPasswordMessage(String name , String host , String key){
         return "Hello "+ name +",\n\nYour Account Password has Been Reset. Please Click on the link below to reset your password.\n\n"+
-                getResetPasswordUrl(host , token)+"\n\nThe Support Team";
+                getResetPasswordUrl(host , key)+"\n\nThe Support Team";
     }
 
-    private static String getVerificationUrl(String host , String token){
-        return host+"/verify/account?token="+token;
+    private static String getVerificationUrl(String host , String key){
+        return host+"/verify/account?key="+key;
     }
 
-    private static String getResetPasswordUrl(String host , String token){
-        return host+"/verify/password?token="+token;
+    private static String getResetPasswordUrl(String host , String key){
+        return host+"/verify/password?key="+key;
     }
 }

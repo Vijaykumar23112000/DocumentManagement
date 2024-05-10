@@ -9,10 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.Collections;
@@ -28,6 +25,13 @@ public class UserResource {
         userService.createUser(user.getFirstName() , user.getLastName() , user.getEmail() , user.getPassword());
         String message = "Account Created .. Check Your Email To Enable Your Account";
         return ResponseEntity.created(getUri()).body(RequestUtils.getResponse(request , Collections.emptyMap() , message , HttpStatus.CREATED));
+    }
+
+    @GetMapping("/verify/account")
+    public ResponseEntity<Response> verifyUser(@RequestParam("key") String key , HttpServletRequest request){
+        userService.verifyAccount(key);
+        String message = "Account Verified .. ";
+        return ResponseEntity.ok().body(RequestUtils.getResponse(request , Collections.emptyMap() , message , HttpStatus.OK));
     }
 
     private URI getUri() {
