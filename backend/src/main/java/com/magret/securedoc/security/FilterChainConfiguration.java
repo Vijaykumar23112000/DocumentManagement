@@ -8,10 +8,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.List;
 
@@ -22,12 +24,25 @@ import java.util.List;
 public class FilterChainConfiguration {
 
     @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+        return http
+                .authorizeHttpRequests(
+                        request -> request
+                                .requestMatchers("/user/test")
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated()
+                )
+                .build();
+    }
+
+    @Bean
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService){
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         return new ProviderManager(daoAuthenticationProvider);
     }
-    
+
     @Bean
     public UserDetailsService userDetailsService(){
         var mathew = User.withDefaultPasswordEncoder()

@@ -34,6 +34,11 @@ public class UserResource {
         return ResponseEntity.ok().body(RequestUtils.getResponse(request , Collections.emptyMap() , message , HttpStatus.OK));
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<String> test(){
+        return ResponseEntity.ok().body("HttpSecurity Test Run successfull");
+    }
+
     private URI getUri() {
         return URI.create("");
     }
