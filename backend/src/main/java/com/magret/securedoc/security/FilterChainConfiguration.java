@@ -40,25 +40,38 @@ public class FilterChainConfiguration {
 
     @Bean
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService){
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-        return new ProviderManager(daoAuthenticationProvider);
+        MyOwnAuthenticationProvider myOwnAuthenticationProvider = new MyOwnAuthenticationProvider(userDetailsService);
+        return new ProviderManager(myOwnAuthenticationProvider);
     }
 
-    @Bean
+/*    @Bean
     public UserDetailsService userDetailsService(){
         var mathew = User.withDefaultPasswordEncoder()
                 .username("mathew")
-                .password("mathew")
+                .password("{noop}mathew")
                 .roles("USER")
                 .build();
         var vj = User.withDefaultPasswordEncoder()
                 .username("vj")
-                .password("vj")
+                .password("{noop}vj")
                 .roles("USER")
                 .build();
 
         return new InMemoryUserDetailsManager(List.of(mathew,vj));
+    }*/
+
+    @Bean
+    public InMemoryUserDetailsManager inMemoryUserDetailsManager(){
+        return new InMemoryUserDetailsManager(
+                User.withUsername("mathew")
+                        .password("mathew")
+                        .roles("USER")
+                        .build(),
+                User.withUsername("vj")
+                        .password("vj")
+                        .roles("USER")
+                        .build()
+        );
     }
 
 }
