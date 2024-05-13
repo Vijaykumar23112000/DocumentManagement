@@ -9,16 +9,21 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.Collections;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = {"/user"})
 @RequiredArgsConstructor
 public class UserResource {
     private final UserService userService;
+    private final AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
     public ResponseEntity<Response> saveUser(@RequestBody @Valid UserRequest user , HttpServletRequest request){
@@ -34,9 +39,11 @@ public class UserResource {
         return ResponseEntity.ok().body(RequestUtils.getResponse(request , Collections.emptyMap() , message , HttpStatus.OK));
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<String> test(){
-        return ResponseEntity.ok().body("HttpSecurity Test Run successfull");
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody UserRequest user){
+        UsernamePasswordAuthenticationToken unAuthenticated = UsernamePasswordAuthenticationToken.unauthenticated(user.getEmail() , user.getPassword());
+        Authentication authentication = authenticationManager.authenticate(unAuthenticated);
+        return ResponseEntity.ok().body(Map.of("user",unAuthenticated));
     }
 
     private URI getUri() {
