@@ -43,25 +43,29 @@ public class RequestUtils {
         return new Response(LocalDateTime.now().toString() , status.value() , request.getRequestURI() , HttpStatus.valueOf(status.value()) , errorReason.apply(exception , status) , getRootCauseMessage(exception) , Collections.emptyMap());
     }
 
-    private static final BiConsumer<HttpServletResponse , Response> writeResponse = ((HttpServletResponse , response) -> {
+    private static final BiConsumer<HttpServletResponse , Response> writeResponse = (httpServletResponse , response) -> {
        try {
-           var outputStream = HttpServletResponse.getOutputStream();
+           var outputStream = httpServletResponse.getOutputStream();
            new ObjectMapper().writeValue(outputStream , response);
            outputStream.flush();
        } catch(Exception exception){
            throw new ApiException(exception.getMessage());
        }
-    });
+    };
 
     private static final BiFunction<Exception , HttpStatus , String> errorReason = (exception, httpStatus) -> {
         if(httpStatus.isSameCodeAs(FORBIDDEN)) {return "You Do Not Have Enough Permission";}
         if(httpStatus.isSameCodeAs(UNAUTHORIZED)) {return "You Are Not Logged In";}
-        if(exception instanceof DisabledException || exception instanceof LockedException || exception instanceof BadCredentialsException || exception instanceof CredentialsExpiredException || exception instanceof ApiException){
+        if(exception instanceof DisabledException
+                || exception instanceof LockedException
+                || exception instanceof BadCredentialsException
+                || exception instanceof CredentialsExpiredException
+                || exception instanceof ApiException){
             return exception.getMessage();
         }
-        if(httpStatus.is5xxServerError()){ return "An Internal Server Error Occured";}
+        if(httpStatus.is5xxServerError()){ return "An Internal Server Error Occurred";}
         else{
-            return "An Error Occured .. Please Try Again";
+            return "Oops .. An Error Occurred .. Please Try Again";
         }
     };
 

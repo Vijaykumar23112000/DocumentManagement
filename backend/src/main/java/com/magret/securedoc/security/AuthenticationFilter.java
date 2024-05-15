@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.magret.securedoc.domain.ApiAuthentication;
 import com.magret.securedoc.dtoRequest.LoginRequest;
 import com.magret.securedoc.enumeration.LoginType;
+import com.magret.securedoc.service.JwtService;
 import com.magret.securedoc.service.UserService;
 import com.magret.securedoc.utils.RequestUtils;
 import jakarta.servlet.FilterChain;
@@ -27,20 +28,24 @@ import static org.springframework.http.HttpMethod.POST;
 public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     private final UserService userService;
-//    private final JwtService jwtService;
-    public AuthenticationFilter(AuthenticationManager authenticationManager , UserService userService /*, JwtService jwtService*/) {
+    private final JwtService jwtService;
+
+    public AuthenticationFilter(AuthenticationManager authenticationManager , UserService userService, JwtService jwtService) {
         super(new AntPathRequestMatcher("/user/login", POST.name()) , authenticationManager);
         this.userService = userService;
-//        this.jwtService = jwtService;
+        this.jwtService = jwtService;
     }
 
     @Override
     public Authentication attemptAuthentication(
             HttpServletRequest request,
             HttpServletResponse response)
-                throws AuthenticationException, IOException, ServletException {
+                throws AuthenticationException, IOException, ServletException
+    {
         try {
-            var user = new ObjectMapper().configure(JsonParser.Feature.AUTO_CLOSE_SOURCE , true).readValue(request.getInputStream() , LoginRequest.class);
+            var user = new ObjectMapper()
+                    .configure(JsonParser.Feature.AUTO_CLOSE_SOURCE , true)
+                    .readValue(request.getInputStream() , LoginRequest.class);
             userService.updateLoginAttempt(user.getEmail() , LoginType.LOGIN_ATTEMPT);
             var authentication = ApiAuthentication.unauthenticated(user.getEmail() , user.getPassword());
             return getAuthenticationManager().authenticate(authentication);
@@ -57,7 +62,8 @@ public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter
             HttpServletResponse response,
             FilterChain chain,
             Authentication authentication)
-                throws IOException, ServletException {
+                throws IOException, ServletException
+    {
         super.successfulAuthentication(request, response, chain, authentication);
     }
 }

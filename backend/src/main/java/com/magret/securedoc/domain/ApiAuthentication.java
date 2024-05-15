@@ -2,6 +2,7 @@ package com.magret.securedoc.domain;
 
 import com.magret.securedoc.dto.User;
 import com.magret.securedoc.exception.ApiException;
+import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -12,7 +13,9 @@ public class ApiAuthentication extends AbstractAuthenticationToken {
     private static final String PASSWORD_PROTECTED = "[PASSWORD PROTECTED]";
     private static final String EMAIL_PROTECTED = "[EMAIL PROTECTED]";
     private User user;
+    @Getter
     private String email;
+    @Getter
     private String password;
     private boolean authenticated;
 
@@ -45,7 +48,9 @@ public class ApiAuthentication extends AbstractAuthenticationToken {
     }
 
     @Override
-    public boolean isAuthenticated() {return this.authenticated;}
+    public boolean isAuthenticated() {
+        return this.authenticated;
+    }
 
     @Override
     public void setAuthenticated(boolean authenticated) {
@@ -55,12 +60,5 @@ public class ApiAuthentication extends AbstractAuthenticationToken {
     @Override
     public Object getPrincipal() {
         return this.user;
-    }
-
-    public String getPassword(){
-        return this.password;
-    }
-    public String getEmail(){
-        return this.email;
     }
 }
