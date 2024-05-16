@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Transactional(rollbackOn = Exception.class)
@@ -39,9 +40,9 @@ public class UserServiceImpl implements UserService {
 //    private final BCryptPasswordEncoder encoder;
     private final CacheStore<String , Integer> userCache;
     private final ApplicationEventPublisher publisher;
+
     @Override
     public void createUser(String firstName, String lastName, String email, String password) {
-
         var userEntity = userRepository.save(createNewUser(firstName , lastName , email ));
         var credentialEntity = new CredentialsEntity(userEntity , password);
         credentialRepository.save(credentialEntity);
